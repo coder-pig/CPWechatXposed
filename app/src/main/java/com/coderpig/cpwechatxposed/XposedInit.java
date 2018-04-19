@@ -1,13 +1,13 @@
 package com.coderpig.cpwechatxposed;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -33,11 +33,12 @@ public class XposedInit implements IXposedHookLoadPackage {
                             Class c = lpparam.classLoader.loadClass("com.coderpig.cpwechatxposed.MainActivity");
                             Field field = c.getDeclaredField("tv");
                             field.setAccessible(true);
-                            Log.e("Test","呵呵");
+                            XposedBridge.log("Test");
                             TextView tv = (TextView) field.get(param.thisObject);
-                            tv.setText("大傻逼");
+                            tv.setText("贪玩难约");
                         }
                     });
         }
     }
+
 }
