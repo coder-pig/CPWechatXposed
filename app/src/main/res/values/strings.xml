@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CPWechatXposed</string>
+    <string name="step_label">步数助手(1到100倍)</string>
+    <string name="enable">启用</string>
+    <string name="disable">禁用</string>
+    <string name="cur_multiple">当前倍数：</string>
 </resources>
