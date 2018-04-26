@@ -4,4 +4,9 @@
     <string name="enable">启用</string>
     <string name="disable">禁用</string>
     <string name="cur_multiple">当前倍数：</string>
+    <string name="cq_label">猜拳助手</string>
+    <string name="jd">剪刀</string>
+    <string name="st">石头</string>
+    <string name="b">布</string>
+    <string name="tz_label">骰子助手</string>
 </resources>

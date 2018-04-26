@@ -1,11 +1,7 @@
 package com.coderpig.cpwechatxposed
 
 import android.annotation.SuppressLint
-import android.util.Log
-import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
-import de.robv.android.xposed.XSharedPreferences
-import de.robv.android.xposed.XposedBridge
+import de.robv.android.xposed.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import kotlin.properties.Delegates
 
@@ -27,9 +23,9 @@ class XposedInit : IXposedHookLoadPackage {
     @SuppressLint("PrivateApi")
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         when (lpparam.packageName) {
-            "com.tencent.mm", "com.alibaba.android.rimet" -> {
-                val c = Class.forName("android.hardware.SystemSensorManager\$SensorEventQueue")
-                XposedBridge.hookAllMethods(c, "dispatchSensorEvent", object : XC_MethodHook() {
+            "com.tencent.mm" -> {
+                val c1 = Class.forName("android.hardware.SystemSensorManager\$SensorEventQueue")
+                XposedBridge.hookAllMethods(c1, "dispatchSensorEvent", object : XC_MethodHook() {
                     override fun beforeHookedMethod(param: MethodHookParam) {
                         xsp.reload()
                         if (xsp.getBoolean(Constants.IS_STEP_OPEN, false)) {
@@ -37,6 +33,26 @@ class XposedInit : IXposedHookLoadPackage {
                             (param.args[1] as FloatArray)[0] = (param.args[1] as FloatArray)[0] * muti
                         }
                         super.beforeHookedMethod(param)
+                    }
+                })
+                val c2 = XposedHelpers.findClass("com.tencent.mm.sdk.platformtools.bh",lpparam.classLoader)
+                XposedHelpers.findAndHookMethod(c2, "eE", Int::class.java, Int::class.java, object : XC_MethodHook() {
+                    override fun afterHookedMethod(param: MethodHookParam) {
+                        xsp.reload()
+                        if(xsp.getBoolean(Constants.IS_CQ_OPEN, false)) {
+                            val cq = xsp.getInt(Constants.CUR_CQ_NUM, 0)
+                            if(param.args[0] == 2) {
+                                param.result = cq
+                            }
+                        }
+                        if(xsp.getBoolean(Constants.IS_TZ_OPEN, false)) {
+                            val tz = xsp.getInt(Constants.CUR_TZ_NUM, 0)
+                            if(param.args[0] == 5) {
+                                param.result = tz
+                            }
+                        }
+//                        super.afterHookedMethod(param)
+//                        Log.e("TTZ", "" + param.args[0] + "~" + param.args[1] + "~" +param.result)
                     }
                 })
             }
