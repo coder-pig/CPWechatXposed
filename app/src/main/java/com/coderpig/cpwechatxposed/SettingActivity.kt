@@ -77,12 +77,12 @@ class SettingActivity : AppCompatActivity() {
 
         rg_tz.setOnCheckedChangeListener { _, checkedId ->
             when(checkedId) {
-                R.id.rb_tz_1 -> SharedPreferenceUtils.putSP(Constants.CUR_CQ_NUM,0)
-                R.id.rb_tz_2 -> SharedPreferenceUtils.putSP(Constants.CUR_CQ_NUM,1)
-                R.id.rb_tz_3 -> SharedPreferenceUtils.putSP(Constants.CUR_CQ_NUM,2)
-                R.id.rb_tz_4 -> SharedPreferenceUtils.putSP(Constants.CUR_CQ_NUM,3)
-                R.id.rb_tz_5 -> SharedPreferenceUtils.putSP(Constants.CUR_CQ_NUM,4)
-                R.id.rb_tz_6 -> SharedPreferenceUtils.putSP(Constants.CUR_CQ_NUM,5)
+                R.id.rb_tz_1 -> SharedPreferenceUtils.putSP(Constants.CUR_TZ_NUM,0)
+                R.id.rb_tz_2 -> SharedPreferenceUtils.putSP(Constants.CUR_TZ_NUM,1)
+                R.id.rb_tz_3 -> SharedPreferenceUtils.putSP(Constants.CUR_TZ_NUM,2)
+                R.id.rb_tz_4 -> SharedPreferenceUtils.putSP(Constants.CUR_TZ_NUM,3)
+                R.id.rb_tz_5 -> SharedPreferenceUtils.putSP(Constants.CUR_TZ_NUM,4)
+                R.id.rb_tz_6 -> SharedPreferenceUtils.putSP(Constants.CUR_TZ_NUM,5)
             }
         }
 

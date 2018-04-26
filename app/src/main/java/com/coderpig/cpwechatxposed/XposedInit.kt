@@ -1,6 +1,7 @@
 package com.coderpig.cpwechatxposed
 
 import android.annotation.SuppressLint
+import android.util.Log
 import de.robv.android.xposed.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import kotlin.properties.Delegates
@@ -37,22 +38,25 @@ class XposedInit : IXposedHookLoadPackage {
                 })
                 val c2 = XposedHelpers.findClass("com.tencent.mm.sdk.platformtools.bh",lpparam.classLoader)
                 XposedHelpers.findAndHookMethod(c2, "eE", Int::class.java, Int::class.java, object : XC_MethodHook() {
+                    @Throws
                     override fun afterHookedMethod(param: MethodHookParam) {
                         xsp.reload()
-                        if(xsp.getBoolean(Constants.IS_CQ_OPEN, false)) {
-                            val cq = xsp.getInt(Constants.CUR_CQ_NUM, 0)
-                            if(param.args[0] == 2) {
-                                param.result = cq
+                        when(param.args[0]) {
+                            2 -> {
+                                if(xsp.getBoolean(Constants.IS_CQ_OPEN, false)) {
+                                    val cq = xsp.getInt(Constants.CUR_CQ_NUM, 0)
+                                        param.result = cq
+                                }
+                            }
+                            5 -> {
+                                if(xsp.getBoolean(Constants.IS_TZ_OPEN, false)) {
+                                    val tz = xsp.getInt(Constants.CUR_TZ_NUM, 0)
+                                        param.result = tz
+                                }
                             }
                         }
-                        if(xsp.getBoolean(Constants.IS_TZ_OPEN, false)) {
-                            val tz = xsp.getInt(Constants.CUR_TZ_NUM, 0)
-                            if(param.args[0] == 5) {
-                                param.result = tz
-                            }
-                        }
-//                        super.afterHookedMethod(param)
-//                        Log.e("TTZ", "" + param.args[0] + "~" + param.args[1] + "~" +param.result)
+                        Log.e("TTZ", "" + param.args[0] + "~" + param.args[1] + "~" +param.result)
+                        super.afterHookedMethod(param)
                     }
                 })
             }
