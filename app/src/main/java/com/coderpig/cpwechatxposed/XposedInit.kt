@@ -1,7 +1,6 @@
 package com.coderpig.cpwechatxposed
 
 import android.annotation.SuppressLint
-import android.util.Log
 import de.robv.android.xposed.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import kotlin.properties.Delegates
@@ -55,10 +54,14 @@ class XposedInit : IXposedHookLoadPackage {
                                 }
                             }
                         }
-                        Log.e("TTZ", "" + param.args[0] + "~" + param.args[1] + "~" +param.result)
                         super.afterHookedMethod(param)
                     }
                 })
+            }
+            //Hook掉模块验证方法返回true
+            "com.coderpig.cpwechatxposed" -> {
+                XposedHelpers.findAndHookMethod("com.coderpig.cpwechatxposed.SettingActivity",
+                        lpparam.classLoader, "isModuleActive",XC_MethodReplacement.returnConstant(true))
             }
         }
     }
