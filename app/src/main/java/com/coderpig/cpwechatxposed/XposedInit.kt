@@ -1,12 +1,16 @@
 package com.coderpig.cpwechatxposed
 
-import android.annotation.SuppressLint
-import de.robv.android.xposed.*
+import com.coderpig.cpwechatxposed.hook.EmojiGameHook
+import com.coderpig.cpwechatxposed.hook.StepHook
+import de.robv.android.xposed.IXposedHookLoadPackage
+import de.robv.android.xposed.XC_MethodReplacement
+import de.robv.android.xposed.XSharedPreferences
+import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import kotlin.properties.Delegates
 
 /**
- * 描述：
+ * 描述：Xposed 处理类
  *
  * @author CoderPig on 2018/04/24 16:03.
  */
@@ -20,48 +24,18 @@ class XposedInit : IXposedHookLoadPackage {
         xsp.makeWorldReadable()
     }
 
-    @SuppressLint("PrivateApi")
+    @Throws(Throwable::class)
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         when (lpparam.packageName) {
             "com.tencent.mm" -> {
-                val c1 = Class.forName("android.hardware.SystemSensorManager\$SensorEventQueue")
-                XposedBridge.hookAllMethods(c1, "dispatchSensorEvent", object : XC_MethodHook() {
-                    override fun beforeHookedMethod(param: MethodHookParam) {
-                        xsp.reload()
-                        if (xsp.getBoolean(Constants.IS_STEP_OPEN, false)) {
-                            val muti = xsp.getString(Constants.CUR_STEP_MULT, "1").toInt()
-                            (param.args[1] as FloatArray)[0] = (param.args[1] as FloatArray)[0] * muti
-                        }
-                        super.beforeHookedMethod(param)
-                    }
-                })
-                val c2 = XposedHelpers.findClass("com.tencent.mm.sdk.platformtools.bh",lpparam.classLoader)
-                XposedHelpers.findAndHookMethod(c2, "eE", Int::class.java, Int::class.java, object : XC_MethodHook() {
-                    @Throws
-                    override fun afterHookedMethod(param: MethodHookParam) {
-                        xsp.reload()
-                        when(param.args[0]) {
-                            2 -> {
-                                if(xsp.getBoolean(Constants.IS_CQ_OPEN, false)) {
-                                    val cq = xsp.getInt(Constants.CUR_CQ_NUM, 0)
-                                        param.result = cq
-                                }
-                            }
-                            5 -> {
-                                if(xsp.getBoolean(Constants.IS_TZ_OPEN, false)) {
-                                    val tz = xsp.getInt(Constants.CUR_TZ_NUM, 0)
-                                        param.result = tz
-                                }
-                            }
-                        }
-                        super.afterHookedMethod(param)
-                    }
-                })
+                xsp.reload()
+                StepHook.hook() //步数助手
+                EmojiGameHook.hook(lpparam) //猜拳和投骰子助手
             }
-            //Hook掉模块验证方法返回true
+            //Hook掉模块验证方法返回true，验证模块是否生效
             "com.coderpig.cpwechatxposed" -> {
-                XposedHelpers.findAndHookMethod("com.coderpig.cpwechatxposed.SettingActivity",
-                        lpparam.classLoader, "isModuleActive",XC_MethodReplacement.returnConstant(true))
+                XposedHelpers.findAndHookMethod("com.coderpig.cpwechatxposed.ui.SettingActivity",
+                        lpparam.classLoader, "isModuleActive", XC_MethodReplacement.returnConstant(true))
             }
         }
     }

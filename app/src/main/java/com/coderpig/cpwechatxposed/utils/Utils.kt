@@ -1,9 +1,10 @@
-package com.coderpig.cpwechatxposed
+package com.coderpig.cpwechatxposed.utils
 
 import android.widget.Toast
+import com.coderpig.cpwechatxposed.App
 
 /**
- * 描述：
+ * 描述：工具方法扩展文件
  *
  * @author CoderPig on 2018/04/27 12:26.
  */

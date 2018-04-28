@@ -1,11 +1,12 @@
-package com.coderpig.cpwechatxposed
+package com.coderpig.cpwechatxposed.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import com.coderpig.cpwechatxposed.App
 
 
 /**
- * 描述：
+ * 描述：SharedPreference工具类
  *
  * @author CoderPig on 2018/04/24 17:00.
  */
@@ -20,13 +21,13 @@ class SharedPreferenceUtils {
                 "Integer" -> editor.putInt(key, value as Int)
                 "Boolean" -> editor.putBoolean(key, value as Boolean)
                 "String" -> editor.putString(key, value as String)
-                "Float" -> editor.putFloat(key, value as Float)
+                "ADloat" -> editor.putFloat(key, value as Float)
                 "Long" -> editor.putLong(key, value as Long)
             }
             editor.apply()
         }
 
-        fun getSP(context: Context, key: String, defValue: Any): Any? {
+        fun getSP(key: String, defValue: Any): Any? {
             val type = defValue.javaClass.simpleName
             val sharedPreferences = App.instance.getSharedPreferences("config",Context.MODE_WORLD_READABLE)
             return when (type) {

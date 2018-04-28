@@ -1,13 +1,17 @@
-package com.coderpig.cpwechatxposed
+package com.coderpig.cpwechatxposed.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.SeekBar
+import com.coderpig.cpwechatxposed.Constants
+import com.coderpig.cpwechatxposed.R
+import com.coderpig.cpwechatxposed.utils.SharedPreferenceUtils
+import com.coderpig.cpwechatxposed.utils.shortToast
 import kotlinx.android.synthetic.main.activity_setting.*
 
 /**
- * 描述：
+ * 描述：Xposed设置页
  *
  * @author CoderPig on 2018/04/24 14:45.
  */
@@ -24,13 +28,13 @@ class SettingActivity : AppCompatActivity() {
     private fun initView() {
         // 步数助手
         tv_mutiple.text = ((resources.getString(R.string.cur_multiple) +
-                (SharedPreferenceUtils.getSP(App.instance, Constants.CUR_STEP_MULT, "0").toString().toInt() + 1)))
-        cb_step_switch.isChecked = SharedPreferenceUtils.getSP(App.instance, Constants.IS_STEP_OPEN, false) as Boolean
+                (SharedPreferenceUtils.getSP(Constants.CUR_STEP_MULT, "0").toString().toInt() + 1)))
+        cb_step_switch.isChecked = SharedPreferenceUtils.getSP(Constants.IS_STEP_OPEN, false) as Boolean
 
         cb_step_switch.setOnCheckedChangeListener({ _, isChecked ->
             SharedPreferenceUtils.putSP(Constants.IS_STEP_OPEN, isChecked)
         })
-        sb_multiple.progress = SharedPreferenceUtils.getSP(App.instance, Constants.CUR_STEP_MULT, "1").toString().toInt() + 1
+        sb_multiple.progress = SharedPreferenceUtils.getSP(Constants.CUR_STEP_MULT, "1").toString().toInt() + 1
         sb_multiple.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 tv_mutiple.text = resources.getString(R.string.cur_multiple) + (progress + 1)
@@ -43,8 +47,8 @@ class SettingActivity : AppCompatActivity() {
             }
         })
         //猜拳助手
-        cb_cq.isChecked = SharedPreferenceUtils.getSP(App.instance, Constants.IS_CQ_OPEN, false) as Boolean
-        when (SharedPreferenceUtils.getSP(App.instance, Constants.CUR_CQ_NUM, 0)) {
+        cb_cq.isChecked = SharedPreferenceUtils.getSP(Constants.IS_CQ_OPEN, false) as Boolean
+        when (SharedPreferenceUtils.getSP(Constants.CUR_CQ_NUM, 0)) {
             0 -> rb_jd.isChecked = true
             1 -> rb_st.isChecked = true
             2 -> rb_b.isChecked = true
@@ -62,8 +66,8 @@ class SettingActivity : AppCompatActivity() {
 
 
         //骰子助手
-        cb_tz.isChecked = SharedPreferenceUtils.getSP(App.instance, Constants.IS_TZ_OPEN, false) as Boolean
-        when (SharedPreferenceUtils.getSP(App.instance, Constants.CUR_TZ_NUM, 0)) {
+        cb_tz.isChecked = SharedPreferenceUtils.getSP(Constants.IS_TZ_OPEN, false) as Boolean
+        when (SharedPreferenceUtils.getSP(Constants.CUR_TZ_NUM, 0)) {
             0 -> rb_tz_1.isChecked = true
             1 -> rb_tz_2.isChecked = true
             2 -> rb_tz_3.isChecked = true
