@@ -11,3 +11,7 @@ import com.coderpig.cpwechatxposed.App
 fun shortToast(msg: String) = Toast.makeText(App.instance, msg, Toast.LENGTH_SHORT).show()
 
 fun longToast(msg: String) = Toast.makeText(App.instance, msg, Toast.LENGTH_LONG).show()
+
+inline fun <reified T> toArray(list: List<*>): Array<T> {
+    return (list as List<T>).toTypedArray()
+}

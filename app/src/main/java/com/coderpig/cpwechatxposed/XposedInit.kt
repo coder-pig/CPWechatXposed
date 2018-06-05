@@ -2,6 +2,7 @@ package com.coderpig.cpwechatxposed
 
 import com.coderpig.cpwechatxposed.hook.EmojiGameHook
 import com.coderpig.cpwechatxposed.hook.StepHook
+import com.coderpig.cpwechatxposed.hook.XiaChuFangHook
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodReplacement
 import de.robv.android.xposed.XSharedPreferences
@@ -36,6 +37,9 @@ class XposedInit : IXposedHookLoadPackage {
             "com.coderpig.cpwechatxposed" -> {
                 XposedHelpers.findAndHookMethod("com.coderpig.cpwechatxposed.ui.SettingActivity",
                         lpparam.classLoader, "isModuleActive", XC_MethodReplacement.returnConstant(true))
+            }
+            "com.xiachufang" -> {
+                XiaChuFangHook.hook(lpparam)
             }
         }
     }
