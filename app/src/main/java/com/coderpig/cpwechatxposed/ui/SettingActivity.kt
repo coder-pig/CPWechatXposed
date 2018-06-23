@@ -46,6 +46,7 @@ class SettingActivity : AppCompatActivity() {
                 SharedPreferenceUtils.putSP(Constants.CUR_STEP_MULT, "" + seekBar.progress)
             }
         })
+
         //猜拳助手
         cb_cq.isChecked = SharedPreferenceUtils.getSP(Constants.IS_CQ_OPEN, false) as Boolean
         when (SharedPreferenceUtils.getSP(Constants.CUR_CQ_NUM, 0)) {
@@ -63,7 +64,6 @@ class SettingActivity : AppCompatActivity() {
                 R.id.rb_b -> SharedPreferenceUtils.putSP(Constants.CUR_CQ_NUM, 2)
             }
         }
-
 
         //骰子助手
         cb_tz.isChecked = SharedPreferenceUtils.getSP(Constants.IS_TZ_OPEN, false) as Boolean
@@ -89,7 +89,20 @@ class SettingActivity : AppCompatActivity() {
                 R.id.rb_tz_6 -> SharedPreferenceUtils.putSP(Constants.CUR_TZ_NUM, 5)
             }
         }
+
+        //下厨房Xposed弹窗屏蔽
+        cb_xcf.isChecked = SharedPreferenceUtils.getSP(Constants.IS_XCF_OPEN, false) as Boolean
+        cb_xcf.setOnCheckedChangeListener({ _, isChecked -> SharedPreferenceUtils.putSP(Constants.IS_XCF_OPEN, isChecked) })
+
+        //微信防撤回
+        cb_wx_fch.isChecked = SharedPreferenceUtils.getSP(Constants.IS_WX_FCH_OPEN, false) as Boolean
+        cb_wx_fch.setOnCheckedChangeListener({ _, isChecked -> SharedPreferenceUtils.putSP(Constants.IS_WX_FCH_OPEN, isChecked) })
+
+        //王者荣耀变OPPO R11s
+        cb_wzry.isChecked = SharedPreferenceUtils.getSP(Constants.IS_WZRY_OPEN, false) as Boolean
+        cb_wzry.setOnCheckedChangeListener({ _, isChecked -> SharedPreferenceUtils.putSP(Constants.IS_WZRY_OPEN, isChecked) })
     }
+
 
     //判断模块是否生效的方法，XposedInit里把这个方法Hook掉返回true
     private fun isModuleActive() = false

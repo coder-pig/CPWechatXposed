@@ -9,4 +9,7 @@
     <string name="st">石头</string>
     <string name="b">布</string>
     <string name="tz_label">骰子助手</string>
+    <string name="xcf_hide">下厨房Xposed弹窗屏蔽</string>
+    <string name="wx_fch">微信防撤回</string>
+    <string name="wzry_r11">王者荣耀变OPPO R11</string>
 </resources>

@@ -17,7 +17,7 @@ object StepHook {
     fun hook() {
         val c1 = Class.forName("android.hardware.SystemSensorManager\$SensorEventQueue")
         XposedBridge.hookAllMethods(c1, "dispatchSensorEvent", object : XC_MethodHook() {
-            override fun beforeHookedMethod(param: MethodHookParam) {
+            override fun beforeHookedMethod(param: MethodHookParam ) {
                 xsp.reload()
                 if (XposedInit.xsp.getBoolean(Constants.IS_STEP_OPEN, false)) {
                     (param.args[1] as FloatArray)[0] = (param.args[1] as FloatArray)[0] * (xsp.getString(Constants.CUR_STEP_MULT, "1").toInt())

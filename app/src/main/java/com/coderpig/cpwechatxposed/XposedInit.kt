@@ -1,8 +1,6 @@
 package com.coderpig.cpwechatxposed
 
-import com.coderpig.cpwechatxposed.hook.EmojiGameHook
-import com.coderpig.cpwechatxposed.hook.StepHook
-import com.coderpig.cpwechatxposed.hook.XiaChuFangHook
+import com.coderpig.cpwechatxposed.hook.*
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodReplacement
 import de.robv.android.xposed.XSharedPreferences
@@ -28,18 +26,24 @@ class XposedInit : IXposedHookLoadPackage {
     @Throws(Throwable::class)
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         when (lpparam.packageName) {
+            //微信相关
             "com.tencent.mm" -> {
                 xsp.reload()
                 StepHook.hook() //步数助手
                 EmojiGameHook.hook(lpparam) //猜拳和投骰子助手
+                RevokeMsgHook.hook(lpparam) //消息防撤回
             }
-            //Hook掉模块验证方法返回true，验证模块是否生效
+
+            //下厨房
+            "com.xiachufang" -> {   XiaChuFangHook.hook(lpparam)    }
+
+            //王者荣耀
+            "com.tencent.tmgp.sgame" -> {   WzryHook.hook()  }
+
+             //Hook掉模块验证方法返回true，验证模块是否生效
             "com.coderpig.cpwechatxposed" -> {
                 XposedHelpers.findAndHookMethod("com.coderpig.cpwechatxposed.ui.SettingActivity",
                         lpparam.classLoader, "isModuleActive", XC_MethodReplacement.returnConstant(true))
-            }
-            "com.xiachufang" -> {
-                XiaChuFangHook.hook(lpparam)
             }
         }
     }
