@@ -22,17 +22,17 @@ object RevokeMsgHook {
     var insertAny: Any ?= null
 
     fun hook(lpparam: XC_LoadPackage.LoadPackageParam) {
-
         // Hook 撤回信息的方法
         try {
             val clazz = XposedHelpers.findClass("com.tencent.wcdb.database.SQLiteDatabase",lpparam.classLoader)
             XposedHelpers.findAndHookMethod(clazz, "updateWithOnConflict", String::class.java, ContentValues::class.java,
                     String::class.java, Array<String>::class.java, Int::class.java, object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
+                    xsp.reload()
                         if(param.args[0] == "message") {
                             val contentValues = param.args[1] as ContentValues
                             val content = contentValues.getAsString("content")
-                            if(contentValues.getAsInteger("type") == 10000 && content != "你撤回了一条消息") {
+                            if(XposedInit.xsp.getBoolean(Constants.IS_WX_FCH_OPEN, false) && contentValues.getAsInteger("type") == 10000 && content != "你撤回了一条消息") {
                                 val msgId = contentValues.getAsLong("msgId")
                                 val msg = msgContainer[msgId]
                                 XposedHelpers.setObjectField(msg, "field_content", "\uD83D\uDC37 拦截到=== "  + content.substring(1, content.indexOf("撤") - 2)+ " ===撤回的 \uD83D\uDCA9 ")
@@ -45,52 +45,34 @@ object RevokeMsgHook {
                     super.beforeHookedMethod(param)
                 }
             })
-        } catch (e: Error) {
-            e.printStackTrace()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
 
-        // Hook 删除资源文件数据库记录的方法
-        try {
-            val clazz = XposedHelpers.findClass("com.tencent.wcdb.database.SQLiteDatabase",lpparam.classLoader)
+            // Hook 删除资源文件数据库记录的方法
             XposedHelpers.findAndHookMethod(clazz, "delete", String::class.java, String::class.java, Array<String>::class.java, object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
-                        val  tableName = param.args[0].toString()
-                        if(tableName.contains("voiceinfo") || tableName.contains("ImgInfo2") ||
-                                tableName.contains("videoinfo2") || tableName.contains("WxFileIndex2")) {
-                            param.result = 1
-                        }
+                    val  tableName = param.args[0].toString()
+                    if(XposedInit.xsp.getBoolean(Constants.IS_WX_FCH_OPEN, false) && tableName.contains("voiceinfo") || tableName.contains("ImgInfo2") ||
+                            tableName.contains("videoinfo2") || tableName.contains("WxFileIndex2")) {
+                        param.result = 1
+                    }
                     super.beforeHookedMethod(param)
                 }
             })
-        } catch (e: Error) {
-            e.printStackTrace()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
 
-        // Hook 删除文件的方法
-        try {
+            // Hook 删除文件的方法
+
             XposedHelpers.findAndHookMethod(File::class.java, "delete", object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
-                        val filePath = (param.thisObject as File).absolutePath
-                        if( filePath.contains("/image2/") ||filePath.contains("/voice2/") || filePath.contains("/video/")) {
-                            param.result = true
+                    val filePath = (param.thisObject as File).absolutePath
+                    if (XposedInit.xsp.getBoolean(Constants.IS_WX_FCH_OPEN, false) && filePath.contains("/image2/") || filePath.contains("/voice2/") || filePath.contains("/video/")) {
+                        param.result = true
                     }
                     super.afterHookedMethod(param)
                 }
             })
-        } catch (e: Error) {
-            e.printStackTrace()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
 
-        // Hook 插入信息的方法
-        try {
-            val clazz = XposedHelpers.findClass("com.tencent.mm.storage.be",lpparam.classLoader)
-            XposedBridge.hookAllMethods(clazz, "b",object : XC_MethodHook() {
+            // Hook 插入信息的方法
+            val cla = XposedHelpers.findClass("com.tencent.mm.storage.be",lpparam.classLoader)
+            XposedBridge.hookAllMethods(cla, "b",object : XC_MethodHook() {
                 override fun afterHookedMethod(param: MethodHookParam) {
                     insertAny = param.thisObject
                     val bd = param.args[0]
@@ -99,6 +81,7 @@ object RevokeMsgHook {
                     super.afterHookedMethod(param)
                 }
             })
+
         } catch (e: Error) {
             e.printStackTrace()
         } catch (e: Exception) {
