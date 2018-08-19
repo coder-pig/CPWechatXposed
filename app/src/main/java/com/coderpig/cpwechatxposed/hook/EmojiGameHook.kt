@@ -13,8 +13,8 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage
  */
 object EmojiGameHook {
     fun hook(lpparam: XC_LoadPackage.LoadPackageParam) {
-        val clazz = XposedHelpers.findClass("com.tencent.mm.sdk.platformtools.bi", lpparam.classLoader)
-        XposedHelpers.findAndHookMethod(clazz, "eF", Int::class.java, Int::class.java, object : XC_MethodHook() {
+        val clazz = XposedHelpers.findClass("com.tencent.mm.sdk.platformtools.bj", lpparam.classLoader)
+        XposedHelpers.findAndHookMethod(clazz, "eV", Int::class.java, Int::class.java, object : XC_MethodHook() {
             override fun afterHookedMethod(param: MethodHookParam) {
                 xsp.reload()
                 if (param.args[0] == 2 && xsp.getBoolean(Constants.IS_CQ_OPEN, false))
