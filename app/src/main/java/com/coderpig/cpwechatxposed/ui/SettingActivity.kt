@@ -31,9 +31,9 @@ class SettingActivity : AppCompatActivity() {
                 (SharedPreferenceUtils.getSP(Constants.CUR_STEP_MULT, "0").toString().toInt() + 1)))
         cb_step_switch.isChecked = SharedPreferenceUtils.getSP(Constants.IS_STEP_OPEN, false) as Boolean
 
-        cb_step_switch.setOnCheckedChangeListener({ _, isChecked ->
+        cb_step_switch.setOnCheckedChangeListener { _, isChecked ->
             SharedPreferenceUtils.putSP(Constants.IS_STEP_OPEN, isChecked)
-        })
+        }
         sb_multiple.progress = SharedPreferenceUtils.getSP(Constants.CUR_STEP_MULT, "1").toString().toInt() + 1
         sb_multiple.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -54,9 +54,9 @@ class SettingActivity : AppCompatActivity() {
             1 -> rb_st.isChecked = true
             2 -> rb_b.isChecked = true
         }
-        cb_cq.setOnCheckedChangeListener({ _, isChecked ->
+        cb_cq.setOnCheckedChangeListener { _, isChecked ->
             SharedPreferenceUtils.putSP(Constants.IS_CQ_OPEN, isChecked)
-        })
+        }
         rg_cq.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.rb_jd -> SharedPreferenceUtils.putSP(Constants.CUR_CQ_NUM, 0)
@@ -75,9 +75,9 @@ class SettingActivity : AppCompatActivity() {
             4 -> rb_tz_5.isChecked = true
             5 -> rb_tz_6.isChecked = true
         }
-        cb_tz.setOnCheckedChangeListener({ _, isChecked ->
+        cb_tz.setOnCheckedChangeListener { _, isChecked ->
             SharedPreferenceUtils.putSP(Constants.IS_TZ_OPEN, isChecked)
-        })
+        }
 
         rg_tz.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
@@ -92,15 +92,15 @@ class SettingActivity : AppCompatActivity() {
 
         //下厨房Xposed弹窗屏蔽
         cb_xcf.isChecked = SharedPreferenceUtils.getSP(Constants.IS_XCF_OPEN, false) as Boolean
-        cb_xcf.setOnCheckedChangeListener({ _, isChecked -> SharedPreferenceUtils.putSP(Constants.IS_XCF_OPEN, isChecked) })
+        cb_xcf.setOnCheckedChangeListener { _, isChecked -> SharedPreferenceUtils.putSP(Constants.IS_XCF_OPEN, isChecked) }
 
         //微信防撤回
         cb_wx_fch.isChecked = SharedPreferenceUtils.getSP(Constants.IS_WX_FCH_OPEN, false) as Boolean
-        cb_wx_fch.setOnCheckedChangeListener({ _, isChecked -> SharedPreferenceUtils.putSP(Constants.IS_WX_FCH_OPEN, isChecked) })
+        cb_wx_fch.setOnCheckedChangeListener { _, isChecked -> SharedPreferenceUtils.putSP(Constants.IS_WX_FCH_OPEN, isChecked) }
 
         //王者荣耀变OPPO R11s
         cb_wzry.isChecked = SharedPreferenceUtils.getSP(Constants.IS_WZRY_OPEN, false) as Boolean
-        cb_wzry.setOnCheckedChangeListener({ _, isChecked -> SharedPreferenceUtils.putSP(Constants.IS_WZRY_OPEN, isChecked) })
+        cb_wzry.setOnCheckedChangeListener { _, isChecked -> SharedPreferenceUtils.putSP(Constants.IS_WZRY_OPEN, isChecked) }
     }
 
 
