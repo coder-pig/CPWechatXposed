@@ -9,10 +9,10 @@
 
 <p align="center" style="margin: 30px 0 35px;">使用Xposed Hook微信等APP</p>
 
-**`CPWechatXposed`** 是笔者折腾Xposed的一些主要记录，Xposed通过Hook应用相关的方法来为应用添加<br>
-一些附加的**`功能`**，本项目仅用于技术研究学习之用，请勿用于商业用途，所以项目不会做任何适配！只保证<br>
-在笔者手机上是可以正常运行的，代码开源，有问题或者建议欢迎提issues。另外，使用Xposed插件的手机<br>
-需要root，如果不想root，可以自行搜索VirtualXposed和EXposed相关的资料。
+**`CPWechatXposed`** 是笔者折腾Xposed的一些主要记录，Xposed通过Hook应用相关的方法来为应用添加一些附加的<br>
+功能，本项目仅用于技术研究学习之用，请勿用于商业用途，所以项目不会做任何适配！只保证在笔者手机上是可以<br>
+正常运行的，代码开源，有问题或者建议欢迎提issues。另外，使用Xposed插件的手机需要root，如果不想root，<br>
+可以自行搜索VirtualXposed和EXposed相关的资料。
 
 
 ## Dev Environment
@@ -50,7 +50,7 @@
 
 ## Article
 
-记录笔者在这个Xposed里的一些记录文章，想学，了解Xposed可以看看研究研究~
+笔者在折腾Xposed里的一些记录文章，想了解和学习Xposed可以看看研究研究~
 
 
 - [抱歉，Xposed真的可以为所欲为——1.基础知识储备](https://juejin.im/post/5ad9886df265da0b776f3dcb)
@@ -67,17 +67,14 @@
 <br>或者在公众号中发送加群~
 
 
-![机器人小号](http://static.zybuluo.com/coder-pig/i0am4as91l5e5h097yc164xg/robot_qr_code.png)
-![公众号](http://static.zybuluo.com/coder-pig/5bqg7c257f7o3ffppq1qb46h/public_qr_code.jpg)
+![机器人小号](http://static.zybuluo.com/coder-pig/i0am4as91l5e5h097yc164xg/robot_qr_code.png)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![公众号](http://static.zybuluo.com/coder-pig/5bqg7c257f7o3ffppq1qb46h/public_qr_code.jpg)
 
 
 ## Donate
 
 如果觉得本项目对你有所帮助，如果经济条件允许的话，可以请小猪喝杯一点点，你的支持是我完善项目的动力~
 
-![波霸](http://static.zybuluo.com/coder-pig/wz88ifi3yihslkydk9r2frqg/wc_pay.png)
-![微信支付](http://static.zybuluo.com/coder-pig/m6zi2n1fyayhlttscbrqhza7/zfb_pay.jpg)
-![支付宝支付](http://static.zybuluo.com/coder-pig/hwbj1qs5gr8m634vlsq05w8u/S80921-10520252.jpg)
+![波霸](http://static.zybuluo.com/coder-pig/w2zfc3t5hh8soqfzpftz0vgj/lqd.jpg)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![微信支付](http://static.zybuluo.com/coder-pig/0kvkf4b2nnitsiogugdhxmkw/wc_pay.png)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![支付宝支付](http://static.zybuluo.com/coder-pig/fqkl501p6o8zdnqd09ne8l50/zfb_pay.jpg)
 
 
 ## LICENSE
