@@ -71,7 +71,7 @@ object RevokeMsgHook {
             })
 
             // Hook 插入信息的方法
-            val cla = XposedHelpers.findClass("com.tencent.mm.storage.bh",lpparam.classLoader)
+            val cla = XposedHelpers.findClass("com.tencent.mm.storage.bj",lpparam.classLoader)
             XposedBridge.hookAllMethods(cla, "b",object : XC_MethodHook() {
                 override fun afterHookedMethod(param: MethodHookParam) {
                     insertAny = param.thisObject
