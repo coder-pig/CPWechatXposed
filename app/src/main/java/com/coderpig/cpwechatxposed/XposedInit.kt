@@ -33,13 +33,6 @@ class XposedInit : IXposedHookLoadPackage {
                 EmojiGameHook.hook(lpparam) //猜拳和投骰子助手
                 RevokeMsgHook.hook(lpparam) //消息防撤回
             }
-
-            //下厨房
-            "com.xiachufang" -> {   XiaChuFangHook.hook(lpparam)    }
-
-            //王者荣耀
-            "com.tencent.tmgp.sgame" -> {   WzryHook.hook()  }
-
              //Hook掉模块验证方法返回true，验证模块是否生效
             "com.coderpig.cpwechatxposed" -> {
                 XposedHelpers.findAndHookMethod("com.coderpig.cpwechatxposed.ui.SettingActivity",

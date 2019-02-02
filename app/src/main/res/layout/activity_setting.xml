@@ -188,35 +188,14 @@
 
 
     <TextView
-        android:id="@+id/tv_xcf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="15dp"
-        android:text="@string/xcf_hide"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rg_tz" />
-
-
-    <CheckBox
-        android:id="@+id/cb_xcf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_xcf"
-        app:layout_constraintStart_toEndOf="@+id/tv_xcf"
-        app:layout_constraintTop_toTopOf="@+id/tv_xcf" />
-
-
-    <TextView
         android:id="@+id/tv_wx_fch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
         android:text="@string/wx_fch"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_xcf" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rg_tz" />
 
 
     <CheckBox
@@ -227,27 +206,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/tv_wx_fch"
         app:layout_constraintStart_toEndOf="@+id/tv_wx_fch"
         app:layout_constraintTop_toTopOf="@+id/tv_wx_fch" />
-
-    <TextView
-        android:id="@+id/tv_wzry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="15dp"
-        android:text="@string/wzry_r11"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cb_wx_fch" />
-
-
-    <CheckBox
-        android:id="@+id/cb_wzry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_wzry"
-        app:layout_constraintStart_toEndOf="@+id/tv_wzry"
-        app:layout_constraintTop_toTopOf="@+id/tv_wzry" />
-
 
 
 </android.support.constraint.ConstraintLayout>

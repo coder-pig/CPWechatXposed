@@ -1,6 +1,7 @@
 package com.coderpig.cpwechatxposed.hook
 
 import android.content.ContentValues
+import android.util.Log
 import com.coderpig.cpwechatxposed.Constants
 import com.coderpig.cpwechatxposed.XposedInit
 import com.coderpig.cpwechatxposed.XposedInit.Companion.xsp
@@ -19,28 +20,29 @@ import java.io.File
 object RevokeMsgHook {
 
     val msgContainer = mutableMapOf<Long, Any>()
-    var insertAny: Any ?= null
+    var insertAny: Any? = null
 
     fun hook(lpparam: XC_LoadPackage.LoadPackageParam) {
         // Hook 撤回信息的方法
         try {
-            val clazz = XposedHelpers.findClass("com.tencent.wcdb.database.SQLiteDatabase",lpparam.classLoader)
+            val clazz = XposedHelpers.findClass("com.tencent.wcdb.database.SQLiteDatabase", lpparam.classLoader)
             XposedHelpers.findAndHookMethod(clazz, "updateWithOnConflict", String::class.java, ContentValues::class.java,
                     String::class.java, Array<String>::class.java, Int::class.java, object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
                     xsp.reload()
-                        if(param.args[0] == "message") {
-                            val contentValues = param.args[1] as ContentValues
-                            val content = contentValues.getAsString("content")
-                            if(XposedInit.xsp.getBoolean(Constants.IS_WX_FCH_OPEN, false) && contentValues.getAsInteger("type") == 10000 && content != "你撤回了一条消息") {
-                                val msgId = contentValues.getAsLong("msgId")
-                                val msg = msgContainer[msgId]
-                                XposedHelpers.setObjectField(msg, "field_content", "\uD83D\uDC37 拦截到=== "  + content.substring(1, content.indexOf("撤") - 2)+ " ===撤回的 \uD83D\uDCA9 ")
-                                XposedHelpers.setIntField(msg, "field_type", contentValues.getAsInteger("type"))
-                                XposedHelpers.setLongField(msg, "field_createTime", XposedHelpers.getLongField(msg,"field_createTime") + 1L)
-                                XposedHelpers.callMethod(insertAny,"b", msg, false)
-                                param.result = 1
-                            }
+                    if (param.args[0] == "message") {
+                        val contentValues = param.args[1] as ContentValues
+                        val content = contentValues.getAsString("content")
+                        Log.e("HEHE", content)
+                        if (XposedInit.xsp.getBoolean(Constants.IS_WX_FCH_OPEN, false) && contentValues.getAsInteger("type") == 10000 && content != "你撤回了一条消息") {
+                            val msgId = contentValues.getAsLong("msgId")
+                            val msg = msgContainer[msgId]
+                            XposedHelpers.setObjectField(msg, "field_content", "\uD83D\uDC37 拦截到=== " + content.substring(1, content.indexOf("撤") - 2) + " ===撤回的 \uD83D\uDCA9 ")
+                            XposedHelpers.setIntField(msg, "field_type", contentValues.getAsInteger("type"))
+                            XposedHelpers.setLongField(msg, "field_createTime", XposedHelpers.getLongField(msg, "field_createTime") + 1L)
+                            XposedHelpers.callMethod(insertAny, "c", msg, false)
+                            param.result = 1
+                        }
                     }
                     super.beforeHookedMethod(param)
                 }
@@ -49,8 +51,8 @@ object RevokeMsgHook {
             // Hook 删除资源文件数据库记录的方法
             XposedHelpers.findAndHookMethod(clazz, "delete", String::class.java, String::class.java, Array<String>::class.java, object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
-                    val  tableName = param.args[0].toString()
-                    if(XposedInit.xsp.getBoolean(Constants.IS_WX_FCH_OPEN, false) && tableName.contains("voiceinfo") || tableName.contains("ImgInfo2") ||
+                    val tableName = param.args[0].toString()
+                    if (XposedInit.xsp.getBoolean(Constants.IS_WX_FCH_OPEN, false) && tableName.contains("voiceinfo") || tableName.contains("ImgInfo2") ||
                             tableName.contains("videoinfo2") || tableName.contains("WxFileIndex2")) {
                         param.result = 1
                     }
@@ -59,7 +61,6 @@ object RevokeMsgHook {
             })
 
             // Hook 删除文件的方法
-
             XposedHelpers.findAndHookMethod(File::class.java, "delete", object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
                     val filePath = (param.thisObject as File).absolutePath
@@ -71,12 +72,12 @@ object RevokeMsgHook {
             })
 
             // Hook 插入信息的方法
-            val cla = XposedHelpers.findClass("com.tencent.mm.storage.bj",lpparam.classLoader)
-            XposedBridge.hookAllMethods(cla, "b",object : XC_MethodHook() {
+            val cla = XposedHelpers.findClass("com.tencent.mm.storage.bj", lpparam.classLoader)
+            XposedBridge.hookAllMethods(cla, "c", object : XC_MethodHook() {
                 override fun afterHookedMethod(param: MethodHookParam) {
                     insertAny = param.thisObject
                     val bd = param.args[0]
-                    val field_msgId = XposedHelpers.getLongField(bd,"field_msgId")
+                    val field_msgId = XposedHelpers.getLongField(bd, "field_msgId")
                     msgContainer[field_msgId] = bd
                     super.afterHookedMethod(param)
                 }

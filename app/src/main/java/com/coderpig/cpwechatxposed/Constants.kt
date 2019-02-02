@@ -13,22 +13,6 @@ class Constants {
         val IS_TZ_OPEN = "is_tz_open"   //是够打开投骰子助手
         val CUR_CQ_NUM = "cur_cq_num"   //猜拳数字0，1，2对应剪刀石头布
         val CUR_TZ_NUM = "cur_tz_num"   //骰子数字0-5，对应1-6点
-        val IS_XCF_OPEN = "is_xcf_open"   //是否打开下厨房弹窗屏蔽
         val IS_WX_FCH_OPEN = "is_wx_fch_open"   //是否打开下厨房弹窗屏蔽
-        val IS_WZRY_OPEN = "is_wzry_open"   //是否打开下厨房弹窗屏蔽
-
-
-        //王者荣耀荣耀相关
-        val APP_NAME ="app_name"
-        val PACKAGE_NAME ="package_name"
-        //手机品牌
-        val BRAND ="BRAND"
-        val MANUFACTURER = "MANUFACTURER"
-        val PRODUCT ="PRODUCT"
-        //手机机型
-        val MODEL = "MODEL"
-        val DEVICE = "DEVICE"
-        //系统版本
-        val RELEASE = "RELEASE"
     }
 }

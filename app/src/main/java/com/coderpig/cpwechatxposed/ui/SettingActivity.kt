@@ -21,7 +21,7 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
         initView()
-        if(!isModuleActive()) shortToast("Xposed模块未激活!")
+        if (!isModuleActive()) shortToast("Xposed模块未激活!")
     }
 
     @SuppressLint("SetTextI18n")
@@ -90,17 +90,9 @@ class SettingActivity : AppCompatActivity() {
             }
         }
 
-        //下厨房Xposed弹窗屏蔽
-        cb_xcf.isChecked = SharedPreferenceUtils.getSP(Constants.IS_XCF_OPEN, false) as Boolean
-        cb_xcf.setOnCheckedChangeListener { _, isChecked -> SharedPreferenceUtils.putSP(Constants.IS_XCF_OPEN, isChecked) }
-
         //微信防撤回
         cb_wx_fch.isChecked = SharedPreferenceUtils.getSP(Constants.IS_WX_FCH_OPEN, false) as Boolean
         cb_wx_fch.setOnCheckedChangeListener { _, isChecked -> SharedPreferenceUtils.putSP(Constants.IS_WX_FCH_OPEN, isChecked) }
-
-        //王者荣耀变OPPO R11s
-        cb_wzry.isChecked = SharedPreferenceUtils.getSP(Constants.IS_WZRY_OPEN, false) as Boolean
-        cb_wzry.setOnCheckedChangeListener { _, isChecked -> SharedPreferenceUtils.putSP(Constants.IS_WZRY_OPEN, isChecked) }
     }
 
 
