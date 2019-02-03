@@ -32,6 +32,7 @@ class XposedInit : IXposedHookLoadPackage {
                 StepHook.hook() //步数助手
                 EmojiGameHook.hook(lpparam) //猜拳和投骰子助手
                 RevokeMsgHook.hook(lpparam) //消息防撤回
+                RedPacketHook.hook(lpparam) //抢红包
             }
              //Hook掉模块验证方法返回true，验证模块是否生效
             "com.coderpig.cpwechatxposed" -> {

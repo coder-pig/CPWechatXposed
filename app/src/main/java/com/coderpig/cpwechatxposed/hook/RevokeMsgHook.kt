@@ -13,7 +13,7 @@ import java.io.File
 
 
 /**
- * 描述：信息防撤回Hook
+ * 描述：微信信息防撤回Hook
  *
  * @author jay on 2018/6/28 12:28
  */
@@ -33,7 +33,6 @@ object RevokeMsgHook {
                     if (param.args[0] == "message") {
                         val contentValues = param.args[1] as ContentValues
                         val content = contentValues.getAsString("content")
-                        Log.e("HEHE", content)
                         if (XposedInit.xsp.getBoolean(Constants.IS_WX_FCH_OPEN, false) && contentValues.getAsInteger("type") == 10000 && content != "你撤回了一条消息") {
                             val msgId = contentValues.getAsLong("msgId")
                             val msg = msgContainer[msgId]
