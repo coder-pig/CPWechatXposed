@@ -2,7 +2,12 @@ package com.coderpig.cpwechatxposed.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.preference.PreferenceManager
 import com.coderpig.cpwechatxposed.App
+import com.coderpig.cpwechatxposed.BuildConfig
+import de.robv.android.xposed.XSharedPreferences
+import java.io.File
+import java.lang.ref.WeakReference
 
 
 /**
@@ -12,32 +17,65 @@ import com.coderpig.cpwechatxposed.App
  */
 class SharedPreferenceUtils {
     companion object {
+        var xSharedPreferences: WeakReference<XSharedPreferences> = WeakReference<XSharedPreferences>(null)
+
+        fun getPref(): XSharedPreferences? {
+            var preferences = xSharedPreferences.get()
+            if (preferences == null) {
+                preferences = XSharedPreferences(BuildConfig.APPLICATION_ID)
+                preferences.makeWorldReadable()
+                preferences.reload()
+                xSharedPreferences = WeakReference(preferences)
+            } else {
+                preferences.reload()
+            }
+            return preferences
+        }
+
+
         @SuppressLint("ApplySharedPref")
         fun putSP(key: String, value: Any) {
             val type = value.javaClass.simpleName
-            val sharedPreferences = App.instance.getSharedPreferences("config",Context.MODE_WORLD_READABLE)
-            val editor = sharedPreferences.edit()
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.instance)
+            val editor = sharedPreferences?.edit()
             when (type) {
-                "Integer" -> editor.putInt(key, value as Int)
-                "Boolean" -> editor.putBoolean(key, value as Boolean)
-                "String" -> editor.putString(key, value as String)
-                "ADloat" -> editor.putFloat(key, value as Float)
-                "Long" -> editor.putLong(key, value as Long)
+                "Integer" -> editor?.putInt(key, value as Int)
+                "Boolean" -> editor?.putBoolean(key, value as Boolean)
+                "String" -> editor?.putString(key, value as String)
+                "ADloat" -> editor?.putFloat(key, value as Float)
+                "Long" -> editor?.putLong(key, value as Long)
             }
-            editor.apply()
+            editor?.apply()
+            setWorldReadable()
         }
 
         fun getSP(key: String, defValue: Any): Any? {
             val type = defValue.javaClass.simpleName
-            val sharedPreferences = App.instance.getSharedPreferences("config",Context.MODE_WORLD_READABLE)
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.instance)
             return when (type) {
-                "Integer" -> sharedPreferences.getInt(key, defValue as Int)
-                "Boolean" -> sharedPreferences.getBoolean(key, defValue as Boolean)
-                "String" -> sharedPreferences.getString(key, defValue as String)
-                "Float" -> sharedPreferences.getFloat(key, defValue as Float)
-                "Long" -> sharedPreferences.getLong(key, defValue as Long)
+                "Integer" -> sharedPreferences?.getInt(key, defValue as Int)
+                "Boolean" -> sharedPreferences?.getBoolean(key, defValue as Boolean)
+                "String" -> sharedPreferences?.getString(key, defValue as String)
+                "Float" -> sharedPreferences?.getFloat(key, defValue as Float)
+                "Long" -> sharedPreferences?.getLong(key, defValue as Long)
                 else -> null
             }
         }
+
+        @SuppressLint("SetWorldReadable", "WorldReadableFiles")
+        private fun setWorldReadable() {
+            val dataDir = File(App.instance.applicationContext.applicationInfo.dataDir)
+            val prefsDir = File(dataDir, "shared_prefs")
+            val prefsFile = File(prefsDir, BuildConfig.APPLICATION_ID + "_preferences.xml")
+            if (prefsFile.exists()) {
+                for (file in arrayOf(dataDir, prefsDir, prefsFile)) {
+                    file.setReadable(true, false)
+                    file.setExecutable(true, false)
+                }
+            }
+        }
+
     }
+
+
 }

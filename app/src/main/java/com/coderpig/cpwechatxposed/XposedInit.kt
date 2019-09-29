@@ -1,6 +1,7 @@
 package com.coderpig.cpwechatxposed
 
 import com.coderpig.cpwechatxposed.hook.*
+import com.coderpig.cpwechatxposed.utils.SharedPreferenceUtils
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodReplacement
 import de.robv.android.xposed.XSharedPreferences
@@ -19,8 +20,9 @@ class XposedInit : IXposedHookLoadPackage {
     }
 
     init {
-        xsp = XSharedPreferences(BuildConfig.APPLICATION_ID, "config")
-        xsp.makeWorldReadable()
+        xsp = SharedPreferenceUtils.getPref()!!
+//        xsp = XSharedPreferences(BuildConfig.APPLICATION_ID, "config")
+//        xsp.makeWorldReadable()
     }
 
     @Throws(Throwable::class)
